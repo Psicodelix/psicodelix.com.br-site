@@ -95,7 +95,7 @@ async function sendWhatsAppEbook(data) {
   const ebookMap = {
     med: {
       title: 'Protocolo MED — Microdosagem Estruturada Diária',
-      url: 'https://drive.google.com/file/d/1_A2emnB1aLnxeE_b1ESbhVY4qSp8_wTf/view?usp=sharing',
+      url: 'https://drive.google.com/file/d/11i3u-cT3DPM5-JFULyynt2F8XS-zDxpF/view?usp=sharing',
     },
     nexus: {
       title: 'Protocolo NEXUS — Neuroplasticidade e Expansão',
