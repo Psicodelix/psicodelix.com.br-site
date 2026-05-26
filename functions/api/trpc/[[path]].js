@@ -263,6 +263,9 @@ export async function onRequest(context) {
       const protocol = getProtocol(leadData.persona || 'home', leadData.usesMedication || false);
       
       // Executar todas as ações em paralelo (sem aguardar)
+      // Log local para consulta posterior (perfil falecom@psicodelix.com.br)
+      console.log(`[LEAD_CAPTURE] ${new Date().toISOString()} | Nome: ${leadData.name} | Email: ${leadData.email} | WhatsApp: ${leadData.whatsapp} | Protocolo: ${protocol}`);
+
       Promise.allSettled([
         saveToGoogleSheets({ ...leadData, protocol }, clientIp, userAgent),
         sendMetaCAPI({ ...leadData, protocol }, clientIp, userAgent, sourceUrl),
