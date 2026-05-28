@@ -1,12 +1,12 @@
 // Serve blog.list com dados estáticos e leads.capture com WhatsApp + Meta CAPI
 // Credenciais da Meta (WhatsApp Business API)
-const WHATSAPP_TOKEN = "EAARt6wSHgfgBRGiodvkBwQeNpnthWYg6ohkwsUoAha5wIaINxrom1yHKWnozzfb9nwXJz5zAsZCOEbcw8q6T0hAUOkmZCCnZCjQ8GLoMJhpGwrcLQsYzncYOxZB7LnR5tIK6JLZCZAbDU5oZCmPGcRbVoBzbRFuB2wm9WZCoYyKwTiPjjYZAxBOwiZApCmEYlrHQZDZD";
-const WHATSAPP_PHONE_NUMBER_ID = "1077878922079586";
+const WHATSAPP_TOKEN = "EAAYAEniMET4BRuo1R2b7hZAiVe9Tmjjpu39z6seAn68XTav6Adxkp4eGhyoTpanRCEWGZAOQyzNOhpaHq67ZC8pe11oKMFKsg4qRLw6d8RWZCZCf1zAicL61L8qP2O59GYIMUCPE8ewUSFoZCfbr4ra6r4niprKnwPjePH597wWH2EnlZAq4tteWtJOmC4zBgZDZD";
+const WHATSAPP_PHONE_NUMBER_ID = "1041344529072503";
 const WHATSAPP_TEMPLATE_NAME = "envio_ebook_central";
 
 // Meta CAPI (Conversions API)
 const META_PIXEL_ID = "1246756067574264";
-const META_CAPI_TOKEN = "EAARt6wSHgfgBRGiodvkBwQeNpnthWYg6ohkwsUoAha5wIaINxrom1yHKWnozzfb9nwXJz5zAsZCOEbcw8q6T0hAUOkmZCCnZCjQ8GLoMJhpGwrcLQsYzncYOxZB7LnR5tIK6JLZCZAbDU5oZCmPGcRbVoBzbRFuB2wm9WZCoYyKwTiPjjYZAxBOwiZApCmEYlrHQZDZD";
+const META_CAPI_TOKEN = "EAAYAEniMET4BRuo1R2b7hZAiVe9Tmjjpu39z6seAn68XTav6Adxkp4eGhyoTpanRCEWGZAOQyzNOhpaHq67ZC8pe11oKMFKsg4qRLw6d8RWZCZCf1zAicL61L8qP2O59GYIMUCPE8ewUSFoZCfbr4ra6r4niprKnwPjePH597wWH2EnlZAq4tteWtJOmC4zBgZDZD";
 
 // Google Sheets webhook
 const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwYG5NNVxe2pmtg_ULi4usu0ES4piBQ1M7z7V2iQnTXfTu-eZ-hhVtaiyETO3lBMHr4/exec";
@@ -141,6 +141,9 @@ async function sendWhatsAppEbook(data) {
         },
       }),
     });
+
+    const resData = await res.json();
+    console.log(`[WhatsApp API Response] Status: ${res.status} | Data: ${JSON.stringify(resData)}`);
 
     // Se o template foi enviado com sucesso, enviar mensagem de follow-up
     if (res.ok) {
