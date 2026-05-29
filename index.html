@@ -278,5 +278,124 @@ Error generating stack: `+l.message+`
 })();
 </script>
 
+
+<script>
+(function() {
+    function injectProtocols() {
+        const container = document.querySelector('.px-grid-protocols');
+        if (!container || document.getElementById('protocol-eleve')) return;
+        
+        const medCard = container.children[0];
+        const nexusCard = container.children[1];
+        if (!medCard || !nexusCard) return;
+
+        const protocols = [
+            {
+                id: 'protocol-eleve',
+                title: 'Protocolo ELEVE',
+                subtitle: 'Psicoterapia Assistida — 30 dias',
+                price: 'R$ 720',
+                description: 'Acompanhamento humano especializado com psicoterapeutas certificados. Ideal para quem busca uma jornada assistida de 30 dias com suporte contínuo.',
+                link: 'https://loja.psicodelix.com/products/pesquisa-etnobotanica-psicoterapia-assistida-por-psicodelicos-protocolo-30-dias',
+                features: [
+                    'Acompanhamento humano especializado',
+                    'Consultas semanais ao vivo',
+                    'Protocolo estruturado de 30 dias',
+                    'Suporte via WhatsApp'
+                ],
+                color: 'linear-gradient(90deg, var(--px-violet), var(--px-indigo))',
+                iconColor: 'var(--px-violet)',
+                bgColor: 'rgba(124, 58, 237, 0.08)',
+                borderColor: 'rgba(124, 58, 237, 0.15)',
+                icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--px-violet)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>'
+            },
+            {
+                id: 'protocol-dess',
+                title: 'Protocolo DESS',
+                subtitle: 'Psicoterapia Intensiva — 60 dias',
+                price: 'R$ 1.350',
+                description: 'Protocolo intensivo de 60 dias com foco em segurança clínica e desmame assistido de medicações. Supervisão direta e personalizada.',
+                link: 'https://loja.psicodelix.com/products/pesquisa-etnobotanica-psicoterapia-assistida-por-psicodelicos-60-dias',
+                features: [
+                    'Acompanhamento direto com Psicoterapeuta',
+                    'Protocolo de 60 dias personalizado',
+                    'Segurança clínica para medicação',
+                    'Suporte intensivo 24/7'
+                ],
+                color: 'linear-gradient(90deg, var(--px-teal), var(--px-emerald))',
+                iconColor: 'var(--px-teal)',
+                bgColor: 'rgba(20, 184, 166, 0.08)',
+                borderColor: 'rgba(20, 184, 166, 0.15)',
+                icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--px-teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>'
+            }
+        ];
+
+        protocols.forEach(p => {
+            const newCard = medCard.cloneNode(true);
+            newCard.id = p.id;
+            
+            // Barra de cor no topo
+            const topBar = newCard.querySelector('div[style*="height: 4px"]');
+            if (topBar) topBar.style.background = p.color;
+            
+            // Ícone e Background do Ícone
+            const iconContainer = newCard.querySelector('div[style*="width: 48px"]');
+            if (iconContainer) {
+                iconContainer.style.background = p.bgColor;
+                iconContainer.style.border = '1px solid ' + p.borderColor;
+                iconContainer.innerHTML = p.icon;
+            }
+            
+            // Título e Subtítulo
+            const titleEl = newCard.querySelector('h3');
+            if (titleEl) titleEl.textContent = p.title;
+            const subtitleEl = newCard.querySelector('p[style*="font-size: 0.82rem"]');
+            if (subtitleEl) {
+                subtitleEl.textContent = p.subtitle;
+                subtitleEl.style.color = p.iconColor;
+            }
+            
+            // Remover Imagem para manter o foco no texto como nos cards de oferta
+            const imgContainer = newCard.querySelector('div[style*="height: 160px"]');
+            if (imgContainer) imgContainer.remove();
+            
+            // Descrição
+            const descEl = newCard.querySelector('p[style*="line-height: 1.7"]');
+            if (descEl) descEl.textContent = p.description;
+            
+            // Features
+            const listEl = newCard.querySelector('div[style*="flex-direction: column"]');
+            if (listEl) {
+                listEl.innerHTML = p.features.map(f => `
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 0.88rem; color: var(--px-text-secondary);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${p.iconColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>
+                        ${f}
+                    </div>
+                `).join('');
+            }
+            
+            // Botão
+            const btn = newCard.querySelector('a');
+            if (btn) {
+                btn.href = p.link;
+                btn.textContent = 'Conhecer o ' + p.title;
+                btn.style.background = p.iconColor;
+            }
+            
+            container.appendChild(newCard);
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', injectProtocols);
+    } else {
+        setTimeout(injectProtocols, 1500);
+    }
+    
+    const observer = new MutationObserver(injectProtocols);
+    observer.observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+
 </body>
 </html>
