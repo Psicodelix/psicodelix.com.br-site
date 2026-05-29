@@ -168,5 +168,115 @@ Error generating stack: `+l.message+`
       defer
       src="https://manus-analytics.com/umami"
       data-website-id="ac0aea7a-846a-4676-9d59-0896801102c3"></script>
-  </body>
+  
+<script>
+(function() {
+    function injectProtocols() {
+        // Procurar pela seção de protocolos
+        const sections = document.querySelectorAll('section');
+        let protocolSection = null;
+        
+        for (const section of sections) {
+            if (section.textContent.includes('Nossos Protocolos') && section.textContent.includes('Escolha o protocolo ideal')) {
+                protocolSection = section;
+                break;
+            }
+        }
+        
+        if (!protocolSection) return;
+        
+        // Encontrar o container dos cards
+        const cardContainer = protocolSection.querySelector('.grid') || protocolSection.querySelector('.flex');
+        if (!cardContainer) return;
+        
+        // Verificar se já injetamos
+        if (document.getElementById('protocol-eleve')) return;
+        
+        // Dados dos novos protocolos
+        const protocols = [
+            {
+                id: 'protocol-eleve',
+                title: 'Protocolo ELEVE',
+                subtitle: 'Psicoterapia Assistida — 30 dias',
+                price: 'R$ 720',
+                link: 'https://loja.psicodelix.com/products/pesquisa-etnobotanica-psicoterapia-assistida-por-psicodelicos-protocolo-30-dias',
+                features: [
+                    'Acompanhamento humano especializado',
+                    'Consultas semanais ao vivo',
+                    'Protocolo estruturado de 30 dias'
+                ],
+                badge: 'Mais Popular',
+                color: '#8b5cf6' // Roxo
+            },
+            {
+                id: 'protocol-dess',
+                title: 'Protocolo DESS',
+                subtitle: 'Psicoterapia Intensiva — 60 dias',
+                price: 'R$ 1.350',
+                link: 'https://loja.psicodelix.com/products/pesquisa-etnobotanica-psicoterapia-assistida-por-psicodelicos-60-dias',
+                features: [
+                    'Acompanhamento direto com Psicoterapeuta',
+                    'Protocolo de 60 dias personalizado',
+                    'Segurança clínica para quem usa medicação'
+                ],
+                badge: 'Mais Completo',
+                color: '#14b8a6' // Teal
+            }
+        ];
+        
+        // Pegar o estilo de um card existente para replicar
+        const existingCard = cardContainer.children[0];
+        if (!existingCard) return;
+        
+        protocols.forEach(p => {
+            const newCard = existingCard.cloneNode(true);
+            newCard.id = p.id;
+            
+            // Atualizar conteúdo mantendo as classes originais
+            const titleEl = newCard.querySelector('h3') || newCard.querySelector('.text-2xl') || newCard.querySelector('div:first-child');
+            if (titleEl) titleEl.textContent = p.title;
+            
+            const subtitleEl = newCard.querySelector('p') || newCard.querySelector('.text-gray-600');
+            if (subtitleEl) subtitleEl.textContent = p.subtitle;
+            
+            const priceEl = newCard.querySelector('.text-4xl') || newCard.querySelector('span');
+            if (priceEl) priceEl.textContent = p.price;
+            
+            const linkEl = newCard.querySelector('a');
+            if (linkEl) {
+                linkEl.href = p.link;
+                linkEl.textContent = 'Conhecer o ' + p.title;
+            }
+            
+            // Atualizar lista de features
+            const listEl = newCard.querySelector('ul');
+            if (listEl) {
+                listEl.innerHTML = p.features.map(f => `
+                    <li class="flex items-center space-x-3">
+                        <svg class="h-5 w-5 text-gold" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>${f}</span>
+                    </li>
+                `).join('');
+            }
+            
+            cardContainer.appendChild(newCard);
+        });
+    }
+    
+    // Executar após o carregamento
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', injectProtocols);
+    } else {
+        setTimeout(injectProtocols, 1000); // Delay para o React renderizar
+    }
+    
+    // Monitorar mudanças no DOM (para SPAs)
+    const observer = new MutationObserver(injectProtocols);
+    observer.observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+
+</body>
 </html>
