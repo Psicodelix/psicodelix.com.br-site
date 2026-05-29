@@ -270,8 +270,43 @@ export async function onRequest(context) {
   const url = new URL(context.request.url);
   const path = url.pathname.replace("/api/trpc/", "");
   
-  // blog.list - retorna dados estáticos
-  if (path === "blog.list" && context.request.method === "GET") {
+  // ofertas.get - retorna os protocolos condicionais baseado no uso de medicação
+  if (path === "ofertas.get") {
+    try {
+      const input = JSON.parse(url.searchParams.get("batch") || "{}")["0"]?.json || {};
+      const usesMedication = input.usesMedication || false;
+      
+      // Lógica condicional de ofertas
+      let protocolsToShow = [];
+      
+      if (usesMedication) {
+        // Com medicação: MED, DESS, NEXUS
+        protocolsToShow = ['MED', 'DESS', 'NEXUS'];
+      } else {
+        // Sem medicação: MED, ELEVE, NEXUS
+        protocolsToShow = ['MED', 'ELEVE', 'NEXUS'];
+      }
+      
+      // Filtrar apenas os protocolos recomendados
+      const filteredProtocols = protocolsToShow.map(key => ({
+        key,
+        ...PROTOCOLS[key]
+      }));
+      
+      return new Response(JSON.stringify({
+        result: { data: { json: { protocols: filteredProtocols, usesMedication } } }
+      }), {
+        headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+      });
+    } catch (e) {
+      return new Response(JSON.stringify({ result: { data: { json: null } } }), {
+        headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+      });
+    }
+  }
+  
+  // blog.list - retorna todos os posts
+  if (path === "blog.list") {& context.request.method === "GET") {
     return new Response(JSON.stringify({
       result: {
         data: {
