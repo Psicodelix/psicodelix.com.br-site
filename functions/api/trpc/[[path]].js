@@ -218,6 +218,34 @@ const PROTOCOLS = {
       'Suporte por chat ilimitado'
     ]
   },
+  ELEVE: {
+    name: 'Protocolo ELEVE',
+    subtitle: 'Psicoterapia Assistida — 30 dias',
+    price: 'R$ 720',
+    originalPrice: '',
+    badge: 'Mais Popular',
+    url: 'https://loja.psicodelix.com/products/pesquisa-etnobotanica-psicoterapia-assistida-por-psicodelicos-protocolo-30-dias',
+    features: [
+      'Acompanhamento humano especializado',
+      'Consultas semanais ao vivo',
+      'Protocolo estruturado de 30 dias',
+      'Suporte via WhatsApp'
+    ]
+  },
+  DESS: {
+    name: 'Protocolo DESS',
+    subtitle: 'Psicoterapia Intensiva — 60 dias',
+    price: 'R$ 1.350',
+    originalPrice: '',
+    badge: 'Mais Completo',
+    url: 'https://loja.psicodelix.com/products/pesquisa-etnobotanica-psicoterapia-assistida-por-psicodelicos-60-dias',
+    features: [
+      'Acompanhamento direto com Psicoterapeuta',
+      'Protocolo de 60 dias personalizado',
+      'Segurança clínica para medicação',
+      'Suporte intensivo 24/7'
+    ]
+  },
   NEXUS: {
     name: 'Protocolo NEXUS',
     subtitle: 'Imersão Terapêutica em Brumadinho',
