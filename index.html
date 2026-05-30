@@ -122,7 +122,10 @@
           const sections = Array.from(document.querySelectorAll('section'));
           let existingBlog = null;
           for (const s of sections) {
-            if (s.innerText.includes('CONHECIMENTO') || s.innerText.includes('BLOG') || s.innerText.includes('Neurociência 15 Abr')) {
+            const text = s.innerText;
+            if (text.includes('Neuroplasticidade e Saúde Mental') || 
+                text.includes('Evidências Clínicas em Psicoterapia') || 
+                text.includes('Depressão Resistente')) {
               existingBlog = s;
               break;
             }
@@ -204,7 +207,6 @@
           injectProtocols();
         });
         
-        // Intervalo de segurança
         setInterval(() => {
           injectBlog();
           injectProtocols();
