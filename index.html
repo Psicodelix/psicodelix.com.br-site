@@ -47,7 +47,6 @@
     <script type="module" crossorigin src="/assets/index-DcTyHjyv.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-3RavWiqu.css">
     <style>
-      /* Estilos para garantir que os cards injetados sejam idênticos aos originais */
       .protocol-injected { display: flex; flex-direction: column; background: #0A1628; border-radius: 1.5rem; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); height: 100%; transition: transform 0.3s ease; }
       .protocol-injected:hover { transform: translateY(-5px); }
       .protocol-injected img { height: 220px; width: 100%; object-fit: cover; }
@@ -66,29 +65,7 @@
     <div id="root"></div>
     <script>
       (function() {
-        function injectProtocols() {
-          // Localizar o container de protocolos de forma mais genérica
-          const container = document.querySelector('.grid.md\\\\:grid-cols-2') || 
-                            document.querySelector('section#protocolos .grid') ||
-                            document.querySelector('main .grid');
-          
-          if (!container) return;
-          if (document.getElementById('eleve-card')) {
-              // Garantir lógica de ofertas se já estiver injetado
-              if (window.location.pathname.includes('ofertas') || document.body.innerText.includes('Protocolo Recomendado')) {
-                  container.style.gridTemplateColumns = window.innerWidth > 1024 ? 'repeat(3, 1fr)' : '1fr';
-                  const usesMed = localStorage.getItem('psicodelix_uses_medication') === 'true';
-                  document.getElementById('eleve-card').style.display = usesMed ? 'none' : 'flex';
-                  document.getElementById('dess-card').style.display = usesMed ? 'flex' : 'none';
-              }
-              return;
-          }
-
-          // Card ELEVE
-          const eleve = document.createElement('div');
-          eleve.id = 'eleve-card';
-          eleve.className = 'protocol-injected';
-          eleve.innerHTML = `
+        const ELEVE_HTML = `
             <img src="/assets-media/eleve_2026.jpg">
             <div class="content">
               <div class="subtitle">Psicoterapia Assistida — 30 dias</div>
@@ -99,14 +76,9 @@
                 <div class="price-new">Por R$ 720,00</div>
                 <a href="https://loja.psicodelix.com/products/pesquisa-etnobotanica-psicoterapia-assistida-por-psicodelicos-protocolo-30-dias" class="btn">Conhecer o Protocolo</a>
               </div>
-            </div>
-          `;
+            </div>`;
 
-          // Card DESS
-          const dess = document.createElement('div');
-          dess.id = 'dess-card';
-          dess.className = 'protocol-injected';
-          dess.innerHTML = `
+        const DESS_HTML = `
             <img src="/assets-media/dess_2026.jpg">
             <div class="content">
               <div class="subtitle" style="color:#14B8A6">Psicoterapia Intensiva — 60 dias</div>
@@ -117,13 +89,47 @@
                 <div class="price-new">Por R$ 1.350,00</div>
                 <a href="https://loja.psicodelix.com/products/pesquisa-etnobotanica-psicoterapia-assistida-por-psicodelicos-60-dias" class="btn" style="background:#14B8A6">Conhecer o Protocolo</a>
               </div>
-            </div>
-          `;
+            </div>`;
 
-          container.appendChild(eleve);
-          container.appendChild(dess);
+        function inject() {
+          const container = document.querySelector('.grid.md\\\\:grid-cols-2') || 
+                            document.querySelector('section#protocolos .grid') ||
+                            document.querySelector('main .grid');
+          
+          if (!container) return;
+
+          let eleve = document.getElementById('eleve-card');
+          if (!eleve) {
+            eleve = document.createElement('div');
+            eleve.id = 'eleve-card';
+            eleve.className = 'protocol-injected';
+            container.appendChild(eleve);
+          }
+          if (eleve.innerHTML !== ELEVE_HTML) eleve.innerHTML = ELEVE_HTML;
+
+          let dess = document.getElementById('dess-card');
+          if (!dess) {
+            dess = document.createElement('div');
+            dess.id = 'dess-card';
+            dess.className = 'protocol-injected';
+            container.appendChild(dess);
+          }
+          if (dess.innerHTML !== DESS_HTML) dess.innerHTML = DESS_HTML;
+
+          // Lógica de Ofertas
+          if (window.location.pathname.includes('ofertas') || document.body.innerText.includes('Protocolo Recomendado')) {
+              container.style.gridTemplateColumns = window.innerWidth > 1024 ? 'repeat(3, 1fr)' : '1fr';
+              const usesMed = localStorage.getItem('psicodelix_uses_medication') === 'true';
+              eleve.style.display = usesMed ? 'none' : 'flex';
+              dess.style.display = usesMed ? 'flex' : 'none';
+          }
         }
-        setInterval(injectProtocols, 500);
+
+        // Rodar imediatamente e manter rodando para vencer o React
+        inject();
+        const observer = new MutationObserver(inject);
+        observer.observe(document.body, { childList: true, subtree: true });
+        setInterval(inject, 1000);
       })();
     </script>
   </body>
