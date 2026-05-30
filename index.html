@@ -47,81 +47,84 @@
     <script type="module" crossorigin src="/assets/index-DcTyHjyv.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-3RavWiqu.css">
     <style>
-      .protocol-card { background: #0A1628; border-radius: 1.5rem; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; height: 100%; }
-      .protocol-img { height: 180px; width: 100%; object-fit: cover; }
-      .protocol-content { padding: 2rem; flex-grow: 1; display: flex; flex-direction: column; }
-      .protocol-tag { font-size: 0.8rem; font-weight: bold; text-transform: uppercase; margin-bottom: 0.5rem; }
-      .protocol-title { color: white; font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; }
-      .protocol-desc { color: rgba(255,255,255,0.6); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem; min-height: 4.8rem; }
-      .protocol-feature { display: flex; align-items: center; gap: 0.75rem; color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-bottom: 0.5rem; }
-      .protocol-price-old { color: rgba(255,255,255,0.4); text-decoration: line-through; font-size: 0.85rem; margin-bottom: 0.25rem; }
-      .protocol-price-new { color: white; font-size: 2rem; font-weight: 800; margin-bottom: 1.5rem; }
-      .protocol-btn { width: 100%; color: white; font-weight: bold; padding: 1rem; border-radius: 0.75rem; transition: opacity 0.2s; cursor: pointer; border: none; }
+      /* Estilos para garantir que os cards injetados sejam idênticos aos originais */
+      .protocol-injected { display: flex; flex-direction: column; background: #0A1628; border-radius: 1.5rem; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); height: 100%; transition: transform 0.3s ease; }
+      .protocol-injected:hover { transform: translateY(-5px); }
+      .protocol-injected img { height: 220px; width: 100%; object-fit: cover; }
+      .protocol-injected .content { padding: 2rem; flex-grow: 1; display: flex; flex-direction: column; }
+      .protocol-injected h3 { color: white; font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem; font-family: 'Playfair Display', serif; }
+      .protocol-injected .subtitle { color: #8B5CF6; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em; }
+      .protocol-injected .desc { color: rgba(255,255,255,0.7); font-size: 1rem; line-height: 1.6; margin-bottom: 1.5rem; flex-grow: 1; }
+      .protocol-injected .price-box { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; }
+      .protocol-injected .price-old { color: rgba(255,255,255,0.4); text-decoration: line-through; font-size: 0.875rem; }
+      .protocol-injected .price-new { color: white; font-size: 1.75rem; font-weight: 800; margin-bottom: 1.5rem; }
+      .protocol-injected .btn { width: 100%; background: #8B5CF6; color: white; font-weight: 700; padding: 1rem; border-radius: 0.75rem; text-align: center; text-decoration: none; transition: background 0.2s; }
+      .protocol-injected .btn:hover { background: #7C3AED; }
     </style>
   </head>
   <body>
     <div id="root"></div>
-    <!-- Injeção de Protocolos Estratégia 2026 -->
     <script>
       (function() {
-        function inject() {
+        function injectProtocols() {
+          // Localizar o container de protocolos
           const container = document.querySelector('.grid.md\\\\:grid-cols-2') || document.querySelector('section#protocolos .grid');
-          if (!container || document.getElementById('injected-protocols')) return;
-          
+          if (!container || document.getElementById('eleve-card')) return;
+
+          // Card ELEVE
           const eleve = document.createElement('div');
-          eleve.id = 'protocol-eleve';
-          eleve.className = 'protocol-card';
+          eleve.id = 'eleve-card';
+          eleve.className = 'protocol-injected';
           eleve.innerHTML = `
-            <img src="/assets-media/eleve_2026.jpg" class="protocol-img">
-            <div class="protocol-content">
-              <span class="protocol-tag" style="color:#8B5CF6">Psicoterapia Assistida — 30 dias</span>
-              <h3 class="protocol-title">Protocolo ELEVE</h3>
-              <p class="protocol-desc">Acompanhamento humano especializado com psicoterapeutas certificados. Ideal para quem prefere consultas online devido à distância.</p>
-              <div style="margin-bottom:2rem;">
-                <div class="protocol-feature"><svg style="width:1rem;height:1rem;color:#8B5CF6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Acompanhamento humano especializado</div>
-                <div class="protocol-feature"><svg style="width:1rem;height:1rem;color:#8B5CF6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Consultas semanais ao vivo</div>
-                <div class="protocol-feature"><svg style="width:1rem;height:1rem;color:#8B5CF6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Suporte via WhatsApp</div>
-              </div>
-              <div style="margin-top:auto;">
-                <div class="protocol-price-old">De R$ 837,00</div>
-                <div class="protocol-price-new">Por R$ 720,00</div>
-                <button class="protocol-btn" style="background:#8B5CF6" onclick="window.location.href='https://loja.psicodelix.com/products/pesquisa-etnobotanica-psicoterapia-assistida-por-psicodelicos-protocolo-30-dias'">Conhecer o Protocolo</button>
+            <img src="/assets-media/eleve_2026.jpg">
+            <div class="content">
+              <div class="subtitle">Psicoterapia Assistida — 30 dias</div>
+              <h3>Protocolo ELEVE</h3>
+              <p class="desc">Acompanhamento humano especializado com psicoterapeutas certificados. Ideal para quem prefere consultas online devido à distância e não estar em Belo Horizonte.</p>
+              <div class="price-box">
+                <div class="price-old">De R$ 837,00</div>
+                <div class="price-new">Por R$ 720,00</div>
+                <a href="https://loja.psicodelix.com/products/pesquisa-etnobotanica-psicoterapia-assistida-por-psicodelicos-protocolo-30-dias" class="btn">Conhecer o Protocolo</a>
               </div>
             </div>
           `;
 
+          // Card DESS
           const dess = document.createElement('div');
-          dess.id = 'protocol-dess';
-          dess.className = 'protocol-card';
+          dess.id = 'dess-card';
+          dess.className = 'protocol-injected';
           dess.innerHTML = `
-            <img src="/assets-media/dess_2026.jpg" class="protocol-img">
-            <div class="protocol-content">
-              <span class="protocol-tag" style="color:#14B8A6">Psicoterapia Intensiva — 60 dias</span>
-              <h3 class="protocol-title">Protocolo DESS</h3>
-              <p class="protocol-desc">Foco em segurança clínica e desmame assistido de medicações. Indicado para usuários de drogas ou remédios.</p>
-              <div style="margin-bottom:2rem;">
-                <div class="protocol-feature"><svg style="width:1rem;height:1rem;color:#14B8A6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Segurança clínica para medicação</div>
-                <div class="protocol-feature"><svg style="width:1rem;height:1rem;color:#14B8A6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Protocolo de 60 dias personalizado</div>
-                <div class="protocol-feature"><svg style="width:1rem;height:1rem;color:#14B8A6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Suporte intensivo 24/7</div>
-              </div>
-              <div style="margin-top:auto;">
-                <div class="protocol-price-old">De R$ 1.527,00</div>
-                <div class="protocol-price-new">Por R$ 1.350,00</div>
-                <button class="protocol-btn" style="background:#14B8A6" onclick="window.location.href='https://loja.psicodelix.com/products/pesquisa-etnobotanica-psicoterapia-assistida-por-psicodelicos-60-dias'">Conhecer o Protocolo</button>
+            <img src="/assets-media/dess_2026.jpg">
+            <div class="content">
+              <div class="subtitle" style="color:#14B8A6">Psicoterapia Intensiva — 60 dias</div>
+              <h3 style="color:white">Protocolo DESS</h3>
+              <p class="desc">Foco em segurança clínica e desmame assistido de medicações. Protocolo mais indicado para usuários de drogas ou remédios.</p>
+              <div class="price-box">
+                <div class="price-old">De R$ 1.527,00</div>
+                <div class="price-new">Por R$ 1.350,00</div>
+                <a href="https://loja.psicodelix.com/products/pesquisa-etnobotanica-psicoterapia-assistida-por-psicodelicos-60-dias" class="btn" style="background:#14B8A6">Conhecer o Protocolo</a>
               </div>
             </div>
           `;
 
           container.appendChild(eleve);
           container.appendChild(dess);
-          container.id = 'injected-protocols';
-          
-          // Ajustar Grid se for página de ofertas
+
+          // Lógica de Ofertas (3 cards)
           if (window.location.pathname.includes('ofertas')) {
             container.style.gridTemplateColumns = window.innerWidth > 1024 ? 'repeat(3, 1fr)' : '1fr';
+            const usesMed = localStorage.getItem('psicodelix_uses_medication') === 'true';
+            
+            // Se usa remédio: Mostra MED, DESS e NEXUS (Esconde ELEVE)
+            // Se NÃO usa: Mostra MED, ELEVE e NEXUS (Esconde DESS)
+            if (usesMed) {
+              eleve.style.display = 'none';
+            } else {
+              dess.style.display = 'none';
+            }
           }
         }
-        setInterval(inject, 2000);
+        setInterval(injectProtocols, 1000);
       })();
     </script>
   </body>
