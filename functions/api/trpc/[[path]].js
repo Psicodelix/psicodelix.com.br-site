@@ -11,6 +11,28 @@ const META_CAPI_TOKEN = "EAAYAEniMET4BRuo1R2b7hZAiVe9Tmjjpu39z6seAn68XTav6Adxkp4
 // Google Sheets webhook
 const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwYG5NNVxe2pmtg_ULi4usu0ES4piBQ1M7z7V2iQnTXfTu-eZ-hhVtaiyETO3lBMHr4/exec";
 
+// Blog posts estáticos (Atualizados com os posts de ontem e hoje)
+const BLOG_POSTS = [
+  {
+    id: 'ritual-do-cacau-sagrado-neurociencia',
+    title: 'Ritual do Cacau Sagrado: A Neurociência por trás da Medicina Ancestral',
+    excerpt: 'Descubra como o cacau sagrado atua no cérebro, liberando anandamida e teobromina para promover remissão da ansiedade e bem-estar sustentado.',
+    image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=1000',
+    date: '30 de Maio de 2026',
+    author: 'Equipe Psicodelix',
+    slug: 'ritual-do-cacau-sagrado-neurociencia'
+  },
+  {
+    id: 'ansiedade-burnout-remissao-psicodelica',
+    title: 'Ansiedade e Burnout: O Framework de Remissão da Johns Hopkins',
+    excerpt: 'Como novos protocolos de psicoterapia assistida estão alcançando 96% de eficácia na remissão de sintomas de burnout crônico.',
+    image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=1000',
+    date: '29 de Maio de 2026',
+    author: 'Equipe Psicodelix',
+    slug: 'ansiedade-burnout-remissao-psicodelica'
+  }
+];
+
 // Nomes amigáveis das personas
 const personaNames = {
   andre: 'Buscador de Equilíbrio',
@@ -91,7 +113,6 @@ async function sendMetaCAPI(data, clientIp, userAgent, sourceUrl) {
 async function sendWhatsAppEbook(data) {
   if (!WHATSAPP_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) return;
 
-  // Mapeamento exclusivo para Psicodelix.com.br
   const ebookMap = {
     med: {
       title: 'Protocolo MED — Microdosagem Estruturada Diária',
@@ -185,14 +206,17 @@ async function saveToGoogleSheets(data, clientIp, userAgent) {
   }
 }
 
-// Blog posts estáticos
-const BLOG_POSTS = [];
-
 export async function onRequest(context) {
   const { request, env } = context;
   const url = new URL(request.url);
   const path = url.pathname.replace('/api/trpc/', '');
 
+  // Endpoint para listar posts do blog
+  if (path === 'blog.list' && request.method === 'GET') {
+    return new Response(JSON.stringify({ result: { data: { json: BLOG_POSTS } } }), { status: 200 });
+  }
+
+  // Endpoint para capturar leads
   if (path === 'leads.capture' && request.method === 'POST') {
     try {
       const body = await request.json();

@@ -58,10 +58,25 @@
       .protocol-card-custom .price-old { color: rgba(255,255,255,0.4); text-decoration: line-through; font-size: 0.875rem; }
       .protocol-card-custom .price-new { color: white; font-size: 1.75rem; font-weight: 800; margin-bottom: 1.5rem; }
       .protocol-card-custom .btn { width: 100%; background: #8B5CF6; color: white; font-weight: 700; padding: 1rem; border-radius: 0.75rem; text-align: center; text-decoration: none; display: block; }
+
+      /* Blog Section Styles */
+      .blog-section-custom { padding: 5rem 0; background: #050B14; }
+      .blog-grid-custom { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem; }
+      .blog-card-custom { background: #0A1628; border-radius: 1rem; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s ease; cursor: pointer; display: flex; flex-direction: column; }
+      .blog-card-custom:hover { transform: translateY(-5px); border-color: #14B8A6; }
+      .blog-card-custom img { width: 100%; height: 200px; object-fit: cover; }
+      .blog-card-custom .blog-content { padding: 1.5rem; flex-grow: 1; }
+      .blog-card-custom .blog-date { color: #14B8A6; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.5rem; }
+      .blog-card-custom h4 { color: white; font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; font-family: 'Playfair Display', serif; line-height: 1.4; }
+      .blog-card-custom p { color: rgba(255,255,255,0.6); font-size: 0.875rem; line-height: 1.6; }
     </style>
   </head>
   <body>
     <div id="root"></div>
+
+    <!-- Blog Section (Static Injection) -->
+    <div id="blog-injection-point"></div>
+
     <script>
       (function() {
         const PROTOCOLS = [
@@ -89,40 +104,88 @@
           }
         ];
 
+        const BLOG_POSTS = [
+          {
+            title: 'Ritual do Cacau Sagrado: A Neurociência por trás da Medicina Ancestral',
+            excerpt: 'Descubra como o cacau sagrado atua no cérebro, liberando anandamida e teobromina para promover remissão da ansiedade.',
+            image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=1000',
+            date: '30 de Maio de 2026',
+            slug: 'ritual-do-cacau-sagrado-neurociencia'
+          },
+          {
+            title: 'Ansiedade e Burnout: O Framework de Remissão da Johns Hopkins',
+            excerpt: 'Como novos protocolos de psicoterapia assistida estão alcançando 96% de eficácia na remissão de sintomas de burnout.',
+            image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=1000',
+            date: '29 de Maio de 2026',
+            slug: 'ansiedade-burnout-remissao-psicodelica'
+          }
+        ];
+
         function run() {
+          // Protocol Cards
           const container = document.querySelector('.grid.md\\\\:grid-cols-2') || 
                             document.querySelector('section#protocolos .grid') ||
                             document.querySelector('main .grid');
           
-          if (!container) return;
+          if (container) {
+            PROTOCOLS.forEach(p => {
+              if (document.getElementById('card-' + p.id)) return;
+              const card = document.createElement('div');
+              card.id = 'card-' + p.id;
+              card.className = 'protocol-card-custom';
+              card.innerHTML = `
+                <img src="${p.img}">
+                <div class="content">
+                  <div class="subtitle" style="color: ${p.color}">${p.subtitle}</div>
+                  <h3>${p.name}</h3>
+                  <p>${p.desc}</p>
+                  <div class="price-box">
+                    <div class="price-old">De ${p.oldPrice}</div>
+                    <div class="price-new">Por ${p.price}</div>
+                    <a href="${p.url}" class="btn" style="background: ${p.color}">Conhecer o Protocolo</a>
+                  </div>
+                </div>
+              `;
+              container.appendChild(card);
+            });
 
-          PROTOCOLS.forEach(p => {
-            if (document.getElementById('card-' + p.id)) return;
-            const card = document.createElement('div');
-            card.id = 'card-' + p.id;
-            card.className = 'protocol-card-custom';
-            card.innerHTML = `
-              <img src="${p.img}">
-              <div class="content">
-                <div class="subtitle" style="color: ${p.color}">${p.subtitle}</div>
-                <h3>${p.name}</h3>
-                <p>${p.desc}</p>
-                <div class="price-box">
-                  <div class="price-old">De ${p.oldPrice}</div>
-                  <div class="price-new">Por ${p.price}</div>
-                  <a href="${p.url}" class="btn" style="background: ${p.color}">Conhecer o Protocolo</a>
+            if (window.location.pathname.includes('ofertas') || document.body.innerText.includes('Protocolo Recomendado')) {
+              const usesMed = localStorage.getItem('psicodelix_uses_medication') === 'true';
+              if (document.getElementById('card-eleve')) document.getElementById('card-eleve').style.display = usesMed ? 'none' : 'flex';
+              if (document.getElementById('card-dess')) document.getElementById('card-dess').style.display = usesMed ? 'flex' : 'none';
+              container.style.gridTemplateColumns = window.innerWidth > 1024 ? 'repeat(3, 1fr)' : '1fr';
+            }
+          }
+
+          // Blog Section
+          const blogPoint = document.getElementById('blog-injection-point');
+          const existingBlog = document.querySelector('section#conhecimento') || document.querySelector('section#blog');
+          
+          if (existingBlog && !document.getElementById('custom-blog-section')) {
+            const blogSection = document.createElement('section');
+            blogSection.id = 'custom-blog-section';
+            blogSection.className = 'blog-section-custom';
+            blogSection.innerHTML = `
+              <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                  <h2 class="text-4xl font-bold text-white mb-4 font-serif">CONHECIMENTO</h2>
+                  <p class="text-gray-400 max-w-2xl mx-auto">Explore as últimas descobertas em neurociência, saúde mental e protocolos terapêuticos.</p>
+                </div>
+                <div class="blog-grid-custom">
+                  ${BLOG_POSTS.map(post => `
+                    <div class="blog-card-custom" onclick="window.location.href='/blog/${post.slug}'">
+                      <img src="${post.image}" alt="${post.title}">
+                      <div class="blog-content">
+                        <div class="blog-date">${post.date}</div>
+                        <h4>${post.title}</h4>
+                        <p>${post.excerpt}</p>
+                      </div>
+                    </div>
+                  `).join('')}
                 </div>
               </div>
             `;
-            container.appendChild(card);
-          });
-
-          // Lógica de 3 cards em ofertas
-          if (window.location.pathname.includes('ofertas') || document.body.innerText.includes('Protocolo Recomendado')) {
-            const usesMed = localStorage.getItem('psicodelix_uses_medication') === 'true';
-            document.getElementById('card-eleve').style.display = usesMed ? 'none' : 'flex';
-            document.getElementById('card-dess').style.display = usesMed ? 'flex' : 'none';
-            container.style.gridTemplateColumns = window.innerWidth > 1024 ? 'repeat(3, 1fr)' : '1fr';
+            existingBlog.parentNode.replaceChild(blogSection, existingBlog);
           }
         }
 
