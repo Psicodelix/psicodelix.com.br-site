@@ -116,6 +116,9 @@ async function sendWhatsAppEbook(data) {
   const firstName = rawFirst.charAt(0).toUpperCase() + rawFirst.slice(1).toLowerCase();
   const formattedPhone = formatWhatsAppNumber(data.whatsapp);
 
+  // LOG PARA TESTE
+  console.log(`[TESTE] Enviando e-book para ${formattedPhone} (${data.name})`);
+
   try {
     // Enviar template com e-book
     const res = await fetch(`https://graph.facebook.com/v19.0/${WHATSAPP_PHONE_NUMBER_ID}/messages`, {
