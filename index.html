@@ -47,89 +47,86 @@
     <script type="module" crossorigin src="/assets/index-DcTyHjyv.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-3RavWiqu.css">
     <style>
-      .protocol-injected { display: flex; flex-direction: column; background: #0A1628; border-radius: 1.5rem; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); height: 100%; transition: transform 0.3s ease; }
-      .protocol-injected:hover { transform: translateY(-5px); }
-      .protocol-injected img { height: 220px; width: 100%; object-fit: cover; }
-      .protocol-injected .content { padding: 2rem; flex-grow: 1; display: flex; flex-direction: column; }
-      .protocol-injected h3 { color: white; font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem; font-family: 'Playfair Display', serif; }
-      .protocol-injected .subtitle { color: #8B5CF6; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em; }
-      .protocol-injected .desc { color: rgba(255,255,255,0.7); font-size: 1rem; line-height: 1.6; margin-bottom: 1.5rem; flex-grow: 1; }
-      .protocol-injected .price-box { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; }
-      .protocol-injected .price-old { color: rgba(255,255,255,0.4); text-decoration: line-through; font-size: 0.875rem; }
-      .protocol-injected .price-new { color: white; font-size: 1.75rem; font-weight: 800; margin-bottom: 1.5rem; }
-      .protocol-injected .btn { width: 100%; background: #8B5CF6; color: white; font-weight: 700; padding: 1rem; border-radius: 0.75rem; text-align: center; text-decoration: none; transition: background 0.2s; }
-      .protocol-injected .btn:hover { background: #7C3AED; }
+      .protocol-card-custom { display: flex; flex-direction: column; background: #0A1628; border-radius: 1.5rem; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); height: 100%; transition: transform 0.3s ease; }
+      .protocol-card-custom:hover { transform: translateY(-5px); }
+      .protocol-card-custom img { height: 220px; width: 100%; object-fit: cover; }
+      .protocol-card-custom .content { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
+      .protocol-card-custom h3 { color: white; font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem; font-family: 'Playfair Display', serif; }
+      .protocol-card-custom .subtitle { color: #8B5CF6; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em; }
+      .protocol-card-custom p { color: rgba(255,255,255,0.7); font-size: 1rem; line-height: 1.6; margin-bottom: 1.5rem; flex-grow: 1; }
+      .protocol-card-custom .price-box { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; }
+      .protocol-card-custom .price-old { color: rgba(255,255,255,0.4); text-decoration: line-through; font-size: 0.875rem; }
+      .protocol-card-custom .price-new { color: white; font-size: 1.75rem; font-weight: 800; margin-bottom: 1.5rem; }
+      .protocol-card-custom .btn { width: 100%; background: #8B5CF6; color: white; font-weight: 700; padding: 1rem; border-radius: 0.75rem; text-align: center; text-decoration: none; display: block; }
     </style>
   </head>
   <body>
     <div id="root"></div>
     <script>
       (function() {
-        const ELEVE_HTML = `
-            <img src="/assets-media/eleve_2026.jpg">
-            <div class="content">
-              <div class="subtitle">Psicoterapia Assistida — 30 dias</div>
-              <h3>Protocolo ELEVE</h3>
-              <p class="desc">Acompanhamento humano especializado com psicoterapeutas certificados. Ideal para quem prefere consultas online devido à distância e não estar em Belo Horizonte.</p>
-              <div class="price-box">
-                <div class="price-old">De R$ 837,00</div>
-                <div class="price-new">Por R$ 720,00</div>
-                <a href="https://loja.psicodelix.com/products/pesquisa-etnobotanica-psicoterapia-assistida-por-psicodelicos-protocolo-30-dias" class="btn">Conhecer o Protocolo</a>
-              </div>
-            </div>`;
+        const PROTOCOLS = [
+          {
+            id: 'eleve',
+            name: 'Protocolo ELEVE',
+            subtitle: 'Psicoterapia Assistida — 30 dias',
+            desc: 'Acompanhamento humano especializado com psicoterapeutas certificados. Ideal para quem prefere consultas online devido à distância e não estar em Belo Horizonte.',
+            price: 'R$ 720,00',
+            oldPrice: 'R$ 837,00',
+            img: '/assets-media/eleve_2026.jpg',
+            url: 'https://loja.psicodelix.com/products/pesquisa-etnobotanica-psicoterapia-assistida-por-psicodelicos-protocolo-30-dias',
+            color: '#8B5CF6'
+          },
+          {
+            id: 'dess',
+            name: 'Protocolo DESS',
+            subtitle: 'Psicoterapia Intensiva — 60 dias',
+            desc: 'Foco em segurança clínica e desmame assistido de medicações. Protocolo mais indicado para usuários de drogas ou remédios.',
+            price: 'R$ 1.350,00',
+            oldPrice: 'R$ 1.527,00',
+            img: '/assets-media/dess_2026.jpg',
+            url: 'https://loja.psicodelix.com/products/pesquisa-etnobotanica-psicoterapia-assistida-por-psicodelicos-60-dias',
+            color: '#14B8A6'
+          }
+        ];
 
-        const DESS_HTML = `
-            <img src="/assets-media/dess_2026.jpg">
-            <div class="content">
-              <div class="subtitle" style="color:#14B8A6">Psicoterapia Intensiva — 60 dias</div>
-              <h3>Protocolo DESS</h3>
-              <p class="desc">Foco em segurança clínica e desmame assistido de medicações. Protocolo mais indicado para usuários de drogas ou remédios.</p>
-              <div class="price-box">
-                <div class="price-old">De R$ 1.527,00</div>
-                <div class="price-new">Por R$ 1.350,00</div>
-                <a href="https://loja.psicodelix.com/products/pesquisa-etnobotanica-psicoterapia-assistida-por-psicodelicos-60-dias" class="btn" style="background:#14B8A6">Conhecer o Protocolo</a>
-              </div>
-            </div>`;
-
-        function inject() {
+        function run() {
           const container = document.querySelector('.grid.md\\\\:grid-cols-2') || 
                             document.querySelector('section#protocolos .grid') ||
                             document.querySelector('main .grid');
           
           if (!container) return;
 
-          let eleve = document.getElementById('eleve-card');
-          if (!eleve) {
-            eleve = document.createElement('div');
-            eleve.id = 'eleve-card';
-            eleve.className = 'protocol-injected';
-            container.appendChild(eleve);
-          }
-          if (eleve.innerHTML !== ELEVE_HTML) eleve.innerHTML = ELEVE_HTML;
+          PROTOCOLS.forEach(p => {
+            if (document.getElementById('card-' + p.id)) return;
+            const card = document.createElement('div');
+            card.id = 'card-' + p.id;
+            card.className = 'protocol-card-custom';
+            card.innerHTML = `
+              <img src="${p.img}">
+              <div class="content">
+                <div class="subtitle" style="color: ${p.color}">${p.subtitle}</div>
+                <h3>${p.name}</h3>
+                <p>${p.desc}</p>
+                <div class="price-box">
+                  <div class="price-old">De ${p.oldPrice}</div>
+                  <div class="price-new">Por ${p.price}</div>
+                  <a href="${p.url}" class="btn" style="background: ${p.color}">Conhecer o Protocolo</a>
+                </div>
+              </div>
+            `;
+            container.appendChild(card);
+          });
 
-          let dess = document.getElementById('dess-card');
-          if (!dess) {
-            dess = document.createElement('div');
-            dess.id = 'dess-card';
-            dess.className = 'protocol-injected';
-            container.appendChild(dess);
-          }
-          if (dess.innerHTML !== DESS_HTML) dess.innerHTML = DESS_HTML;
-
-          // Lógica de Ofertas
+          // Lógica de 3 cards em ofertas
           if (window.location.pathname.includes('ofertas') || document.body.innerText.includes('Protocolo Recomendado')) {
-              container.style.gridTemplateColumns = window.innerWidth > 1024 ? 'repeat(3, 1fr)' : '1fr';
-              const usesMed = localStorage.getItem('psicodelix_uses_medication') === 'true';
-              eleve.style.display = usesMed ? 'none' : 'flex';
-              dess.style.display = usesMed ? 'flex' : 'none';
+            const usesMed = localStorage.getItem('psicodelix_uses_medication') === 'true';
+            document.getElementById('card-eleve').style.display = usesMed ? 'none' : 'flex';
+            document.getElementById('card-dess').style.display = usesMed ? 'flex' : 'none';
+            container.style.gridTemplateColumns = window.innerWidth > 1024 ? 'repeat(3, 1fr)' : '1fr';
           }
         }
 
-        // Rodar imediatamente e manter rodando para vencer o React
-        inject();
-        const observer = new MutationObserver(inject);
-        observer.observe(document.body, { childList: true, subtree: true });
-        setInterval(inject, 1000);
+        setInterval(run, 500);
       })();
     </script>
   </body>
