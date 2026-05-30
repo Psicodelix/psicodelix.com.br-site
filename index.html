@@ -67,9 +67,22 @@
     <script>
       (function() {
         function injectProtocols() {
-          // Localizar o container de protocolos
-          const container = document.querySelector('.grid.md\\\\:grid-cols-2') || document.querySelector('section#protocolos .grid');
-          if (!container || document.getElementById('eleve-card')) return;
+          // Localizar o container de protocolos de forma mais genérica
+          const container = document.querySelector('.grid.md\\\\:grid-cols-2') || 
+                            document.querySelector('section#protocolos .grid') ||
+                            document.querySelector('main .grid');
+          
+          if (!container) return;
+          if (document.getElementById('eleve-card')) {
+              // Garantir lógica de ofertas se já estiver injetado
+              if (window.location.pathname.includes('ofertas') || document.body.innerText.includes('Protocolo Recomendado')) {
+                  container.style.gridTemplateColumns = window.innerWidth > 1024 ? 'repeat(3, 1fr)' : '1fr';
+                  const usesMed = localStorage.getItem('psicodelix_uses_medication') === 'true';
+                  document.getElementById('eleve-card').style.display = usesMed ? 'none' : 'flex';
+                  document.getElementById('dess-card').style.display = usesMed ? 'flex' : 'none';
+              }
+              return;
+          }
 
           // Card ELEVE
           const eleve = document.createElement('div');
@@ -97,7 +110,7 @@
             <img src="/assets-media/dess_2026.jpg">
             <div class="content">
               <div class="subtitle" style="color:#14B8A6">Psicoterapia Intensiva — 60 dias</div>
-              <h3 style="color:white">Protocolo DESS</h3>
+              <h3>Protocolo DESS</h3>
               <p class="desc">Foco em segurança clínica e desmame assistido de medicações. Protocolo mais indicado para usuários de drogas ou remédios.</p>
               <div class="price-box">
                 <div class="price-old">De R$ 1.527,00</div>
@@ -109,22 +122,8 @@
 
           container.appendChild(eleve);
           container.appendChild(dess);
-
-          // Lógica de Ofertas (3 cards)
-          if (window.location.pathname.includes('ofertas')) {
-            container.style.gridTemplateColumns = window.innerWidth > 1024 ? 'repeat(3, 1fr)' : '1fr';
-            const usesMed = localStorage.getItem('psicodelix_uses_medication') === 'true';
-            
-            // Se usa remédio: Mostra MED, DESS e NEXUS (Esconde ELEVE)
-            // Se NÃO usa: Mostra MED, ELEVE e NEXUS (Esconde DESS)
-            if (usesMed) {
-              eleve.style.display = 'none';
-            } else {
-              dess.style.display = 'none';
-            }
-          }
         }
-        setInterval(injectProtocols, 1000);
+        setInterval(injectProtocols, 500);
       })();
     </script>
   </body>
