@@ -95,11 +95,11 @@ async function sendWhatsAppEbook(data) {
   const ebookMap = {
     med: {
       title: 'Protocolo MED — Microdosagem Estruturada Diária',
-      url: 'https://drive.google.com/file/d/1YEDJyXrnHB47YZ4uLmPY7YbokthKDmT0/view?usp=drive_link',
+      url: 'https://psicodelix.com.br/ebook-med.pdf',
     },
     nexus: {
       title: 'Protocolo NEXUS — Neuroplasticidade e Expansão',
-      url: 'https://drive.google.com/file/d/1CFwJ6N8R1ZWLDltyoqZP4ilLqe4sue-E/view?usp=drive_link',
+      url: 'https://psicodelix.com.br/ebook-nexus.pdf',
     }
   };
 
