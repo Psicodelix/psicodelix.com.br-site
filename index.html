@@ -46,7 +46,7 @@
     <link rel="apple-touch-icon" href="/assets-media/logo_psicodelix_8f64b624.png" />
     <script type="module" crossorigin src="/assets/index-DcTyHjyv.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-3RavWiqu.css">
-    <style>
+    <style id="psicodelix-custom-styles">
       .protocol-card-custom { display: flex; flex-direction: column; background: #0A1628; border-radius: 1.5rem; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); height: 100%; transition: transform 0.3s ease; }
       .protocol-card-custom:hover { transform: translateY(-5px); }
       .protocol-card-custom img { height: 220px; width: 100%; object-fit: cover; }
@@ -60,7 +60,7 @@
       .protocol-card-custom .btn { width: 100%; background: #8B5CF6; color: white; font-weight: 700; padding: 1rem; border-radius: 0.75rem; text-align: center; text-decoration: none; display: block; }
 
       /* Blog Section Styles */
-      .blog-section-custom { padding: 5rem 0; background: #050B14; }
+      .blog-section-custom { padding: 5rem 0; background: #050B14 !important; position: relative; z-index: 10; }
       .blog-grid-custom { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem; }
       .blog-card-custom { background: #0A1628; border-radius: 1rem; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s ease; cursor: pointer; display: flex; flex-direction: column; }
       .blog-card-custom:hover { transform: translateY(-5px); border-color: #14B8A6; }
@@ -73,9 +73,6 @@
   </head>
   <body>
     <div id="root"></div>
-
-    <!-- Blog Section (Static Injection) -->
-    <div id="blog-injection-point"></div>
 
     <script>
       (function() {
@@ -121,8 +118,45 @@
           }
         ];
 
-        function run() {
-          // Protocol Cards
+        function injectBlog() {
+          const h2s = Array.from(document.querySelectorAll('h2'));
+          let existingBlog = null;
+          for (const h2 of h2s) {
+            if (h2.innerText.includes('CONHECIMENTO') || h2.innerText.includes('BLOG')) {
+              existingBlog = h2.closest('section');
+              break;
+            }
+          }
+          
+          if (existingBlog && !document.getElementById('custom-blog-section')) {
+            const blogSection = document.createElement('section');
+            blogSection.id = 'custom-blog-section';
+            blogSection.className = 'blog-section-custom';
+            blogSection.innerHTML = `
+              <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                  <h2 class="text-4xl font-bold text-white mb-4 font-serif">CONHECIMENTO</h2>
+                  <p class="text-gray-400 max-w-2xl mx-auto">Explore as últimas descobertas em neurociência, saúde mental e protocolos terapêuticos.</p>
+                </div>
+                <div class="blog-grid-custom">
+                  ${BLOG_POSTS.map(post => `
+                    <div class="blog-card-custom" onclick="window.location.href='/blog/${post.slug}'">
+                      <img src="${post.image}" alt="${post.title}">
+                      <div class="blog-content">
+                        <div class="blog-date">${post.date}</div>
+                        <h4>${post.title}</h4>
+                        <p>${post.excerpt}</p>
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            `;
+            existingBlog.parentNode.replaceChild(blogSection, existingBlog);
+          }
+        }
+
+        function injectProtocols() {
           const container = document.querySelector('.grid.md\\\\:grid-cols-2') || 
                             document.querySelector('section#protocolos .grid') ||
                             document.querySelector('main .grid');
@@ -156,40 +190,21 @@
               container.style.gridTemplateColumns = window.innerWidth > 1024 ? 'repeat(3, 1fr)' : '1fr';
             }
           }
-
-          // Blog Section
-          const blogPoint = document.getElementById('blog-injection-point');
-          const existingBlog = document.querySelector('section#conhecimento') || document.querySelector('section#blog');
-          
-          if (existingBlog && !document.getElementById('custom-blog-section')) {
-            const blogSection = document.createElement('section');
-            blogSection.id = 'custom-blog-section';
-            blogSection.className = 'blog-section-custom';
-            blogSection.innerHTML = `
-              <div class="container mx-auto px-4">
-                <div class="text-center mb-12">
-                  <h2 class="text-4xl font-bold text-white mb-4 font-serif">CONHECIMENTO</h2>
-                  <p class="text-gray-400 max-w-2xl mx-auto">Explore as últimas descobertas em neurociência, saúde mental e protocolos terapêuticos.</p>
-                </div>
-                <div class="blog-grid-custom">
-                  ${BLOG_POSTS.map(post => `
-                    <div class="blog-card-custom" onclick="window.location.href='/blog/${post.slug}'">
-                      <img src="${post.image}" alt="${post.title}">
-                      <div class="blog-content">
-                        <div class="blog-date">${post.date}</div>
-                        <h4>${post.title}</h4>
-                        <p>${post.excerpt}</p>
-                      </div>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-            `;
-            existingBlog.parentNode.replaceChild(blogSection, existingBlog);
-          }
         }
 
-        setInterval(run, 500);
+        // MutationObserver para garantir que o React não remova nossas mudanças
+        const observer = new MutationObserver(() => {
+          injectBlog();
+          injectProtocols();
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+        
+        // Execução inicial
+        window.addEventListener('load', () => {
+          injectBlog();
+          injectProtocols();
+        });
       })();
     </script>
   </body>
